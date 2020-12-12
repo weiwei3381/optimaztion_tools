@@ -33,9 +33,6 @@
 初始化种群：按下式随机生成*N*个“生物”个体，每个“生物”为一个初始解。
 
 ![](http://latex.codecogs.com/gif.latex?X_i=L_b+rand(1,D)(U_b-L_b))
-$$
-X_i = L_b+{rand}(1,D)(U_b-L_b)
-$$
 
 式中![](http://latex.codecogs.com/gif.latex?X_i)代表生态系统中第![](http://latex.codecogs.com/gif.latex?i(i=1,2,\ldots,N))个“生物”，*D*为解的维数，*rand(1,D)*为![](http://latex.codecogs.com/gif.latex?1\times&space;D)维的缩放因子向量，![](http://latex.codecogs.com/gif.latex?U_b)、![](http://latex.codecogs.com/gif.latex?L_b)是搜索空间的上界和下界。
 
