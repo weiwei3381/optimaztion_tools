@@ -1,0 +1,11 @@
+# vscode工作区配置
+# .vscode
+
+# node.js下载依赖
+node_modules/
+
+# 编译/调试文件
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+[Dd]ist
