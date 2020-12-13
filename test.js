@@ -50,4 +50,10 @@ c[0][0] = 8
 console.log(nc.prettyPrint(b))
 console.log(nc.prettyPrint(c))
 
+let ve = [2,3,4,5]
+console.log(nc.sum(ve))
+console.log(nc.prod(ve))
+console.log(nc.norm2Squared(ve))  // 5.4772
+console.log(nc.norm2(ve))  // 5.4772
 
+console.log(nc.div(nc.rep([5],10),nc.linspace(1,5,5)))
