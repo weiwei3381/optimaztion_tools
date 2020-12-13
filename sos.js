@@ -18,7 +18,7 @@ class SOS {
     this.ub = ub  // 搜索空间的上界
     this.fitnessFunc = fitnessFunc  // 评价函数(适应度函数)
     this.isMinimize = isMinimize  // 是否最小化评价函数
-    this.organSize = 10  // 生物体个数
+    this.organSize = 20  // 生物体个数
     this.maxIter = 10000  // 最大迭代次数
     this._init()  // 初始化
   }
@@ -40,9 +40,10 @@ class SOS {
 
   run() {
     for (let iter = 0; iter < this.maxIter; iter++) {
-      this._mutualismPhase()
-      this._commensalismPhase()
-      this._parasitismPhase()
+      this._mutualismPhase()  // 互惠阶段
+      this._commensalismPhase()  // 共生阶段
+      this._parasitismPhase()  // 寄生阶段
+      this._getBest()  // 更新当前最佳值
     }
     return this.best
   }
