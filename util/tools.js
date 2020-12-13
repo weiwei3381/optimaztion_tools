@@ -6,16 +6,6 @@
 
  const numeric = require('numeric')
 
-function zeros(size){
-  const randMatrix = numeric.random(size)
-  return numeric.mul(randMatrix, 0)
-}
-
-function ones(size){
-  const zeroMatrix = zeros(size)
-  return numeric.add(zeroMatrix, 1)
-}
-
 /**
  * 获得在lb和ub范围内的随机向量
  * 计算原理是lb + (ub - lb) * rand(0,1)
@@ -31,10 +21,25 @@ function getRandomVector(dimension, lb, ub) {
   // 得到最终随机向量
   const randomVec = numeric.add(lb, numeric.mul(scaleRandVec, rangeVec));
   return randomVec
-};
+}
+
+/**
+ * 从[0,sum-1]中随机选择n个整数, 不得重复, 例如selectRandomNum(10,3), 返回为[0,3,7]
+ * @param {number} sum 总数
+ * @param {number} n 需要选择随机数的个数,不得超过总数大小
+ */
+function selectRandomNum(sum,n){
+  const randomPosList = []
+  while(1){
+    const randPos = Math.floor(Math.random() * sum)  // 获得随机位置
+    if(randomPosList.includes(randPos))continue  // 如果已经有了则重新获得随机位置
+    randomPosList.push(randPos)
+    if(randomPosList.length >= n) break  // 如果满足数量要求则跳出
+  }
+  return randomPosList
+}
 
 module.exports = {
   getRandomVector,
-  zeros,
-  ones
+  selectRandomNum,
 }
