@@ -1,3 +1,6 @@
 {
-  "outline.showClasses": true
+  "outline.showClasses": true,
+  "workbench.editor.enablePreview": false,
+  "gitlens.blame.highlight.enabled": false,
+  "gitlens.currentLine.enabled": false
 }
