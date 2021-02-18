@@ -3,9 +3,9 @@
  */
 
 const nc = require('numeric')
-const SOS = require('./sos')
-const { getRandomVector, selectRandomNum } = require('./util/tools')
-const tools = require('./util/tools')
+const SOS = require('./algorithm/sos')
+const { getRandomVector, selectRandomNum } = require('./utils')
+const utils = require('./utils')
 console.log(SOS)
 
 let A = [[1,2,3],[4,5,6]]

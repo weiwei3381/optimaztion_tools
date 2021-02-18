@@ -4,7 +4,7 @@
  * @date 2020-12-12
  */
 
-const tools = require('./util/tools')
+const utils = require('../utils')
 const nc = require('numeric')
 
 /**
@@ -31,7 +31,7 @@ class SOS {
     // 初始化共生算法中的所有生物体
     this.organisms = []
     for (let i = 0; i < this.organSize; i++) {
-      const x = tools.getRandomVector(this.dimension, this.lb, this.ub)
+      const x = utils.getRandomVector(this.dimension, this.lb, this.ub)
       const y = this.fitnessFunc(x)
       this.organisms.push(new Organism(x, y))
     }
@@ -80,7 +80,7 @@ class SOS {
   _mutualismPhase() {
     // 第一阶段: 互利互惠
     // 随机选择两个生物
-    const randPosList = tools.selectRandomNum(this.organisms.length, 2)
+    const randPosList = utils.selectRandomNum(this.organisms.length, 2)
     const organ_i = this.organisms[randPosList[0]]
     const organ_j = this.organisms[randPosList[1]]
     // 计算Mutual_Vector = (Xi+Xj)/2
@@ -113,7 +113,7 @@ class SOS {
   _commensalismPhase() {
     // 第2阶段: 共生阶段
     // 随机选择两个生物
-    const randPosList = tools.selectRandomNum(this.organisms.length, 2)
+    const randPosList = utils.selectRandomNum(this.organisms.length, 2)
     const organ_i = this.organisms[randPosList[0]]
     const organ_j = this.organisms[randPosList[1]]
     // 根据X_j获得X_i的新解, 公式为: X_inew=X_i+rand(-1,1)⋅(X_best-X_j)
@@ -126,7 +126,7 @@ class SOS {
   _parasitismPhase() {
     // 第3阶段:寄生阶段
     // 随机选择两个生物
-    const randPosList = tools.selectRandomNum(this.organisms.length, 2)
+    const randPosList = utils.selectRandomNum(this.organisms.length, 2)
     const organ_i = this.organisms[randPosList[0]]
     const organ_j = this.organisms[randPosList[1]]
     const mutation = organ_i.mutate(this.dimension, this.lb, this.ub)  // 获得生物体1的寄生向量
@@ -153,9 +153,9 @@ class Organism {
     // 获得当前x的拷贝
     const mutation = nc.clone(this.x)
     // 获得一个随机的向量
-    const randVec = tools.getRandomVector(dimension, lb, ub)
+    const randVec = utils.getRandomVector(dimension, lb, ub)
     // 获得1个随机的维度, 解构赋值给randomDim
-    const [randomDim] = tools.selectRandomNum(dimension, 1)
+    const [randomDim] = utils.selectRandomNum(dimension, 1)
     // 将这个维度进行变异
     mutation[randomDim] = randVec[randomDim]
     return mutation

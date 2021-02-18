@@ -39,7 +39,67 @@ function selectRandomNum(sum,n){
   return randomPosList
 }
 
+function findMaxItem(items){
+  const n = items.length
+  let maxItem = -Infinity
+  let maxItemIndex = 0
+  for(let i = 0; i < n; i++){
+    const item = items[i]
+    if(item > maxItem){
+      maxItem = item
+      maxItemIndex = i
+    }
+  }
+  return {
+    value: maxItem,
+    index: maxItemIndex
+  }
+}
+
+function findMinItem(items){
+  const n = items.length
+  let minItem = Infinity
+  let minItemIndex = 0
+  for(let i = 0; i < n; i++){
+    const item = items[i]
+    if(item < minItem){
+      minItem = item
+      minItemIndex = i
+    }
+  }
+  return {
+    value: minItem,
+    index: minItemIndex
+  }
+}
+
+/**
+ * 判断两个数组内的元素是否都相等，该方法只适合与字面值而非引用值，例如：
+ * a = [1,2,3]，b=[2,1,3]，那么a和b是内容相等的
+ * a = [1,2,3,4]，b=[2,1,3]，那么a和b是内容是不等的
+ * 
+ * 
+ * @param {Array} array1 数组1
+ * @param {Array} array2 数组2
+ */
+function isContentEqualArray(array1, array2){
+  // 首先判断两个数组大小是否一致
+  if(array1.length !== array2.length){
+    return false
+  }
+  for(let i = 0; i < array1.length; i++){
+    const item1 = array1[i]
+    if(!array2.includes(item1)){
+      return false
+    }
+  }
+  return true
+}
+
 module.exports = {
   getRandomVector,
   selectRandomNum,
+  findMaxItem,
+  findMinItem,
+  isContentEqualArray,
 }
