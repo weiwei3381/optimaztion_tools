@@ -174,6 +174,17 @@ numeric.inv(A)  // 获得矩阵A的逆矩阵
 numeric.transpose(A)  // 获得矩阵A的转置矩阵
 ```
 
+## 矩阵/向量数值查找
+
+```js
+numeric.sup(A)  // 获得矩阵A/向量A中最大值
+numeric.supV(V)  // 获得向量A中最大值
+
+numeric.inf(A)  // 获得矩阵A/向量A中最小值
+numeric.infV(V)  // 获得向量A中最小值
+
+```
+
 ## 其他工具方法
 
 ### 生成线性数组
