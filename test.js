@@ -3,7 +3,7 @@
  */
 
 const nc = require('numeric')
-const SOS = require('./algorithm/sos')
+const SOS = require('./method/sos')
 const { getRandomVector, selectRandomNum } = require('./utils')
 const utils = require('./utils')
 console.log(SOS)

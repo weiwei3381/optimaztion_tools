@@ -1,4 +1,4 @@
-const SOS = require('./algorithm/sos')
+const SOS = require('./method/sos')
 const nc = require('numeric')
 const benchmark = require('./benchmark')
 

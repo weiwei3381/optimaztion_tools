@@ -3,7 +3,7 @@
  */
 
 const nc = require('numeric')
-const ApCluster = require("./algorithm/ap_cluster")
+const ApCluster = require("./method/ap_cluster")
 const tools= require("./utils")
 
 const ap = new ApCluster([[1.1],[2.1],[3],[1.5],[1.7],[5],[6],[4.1]])
