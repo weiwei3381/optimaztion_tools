@@ -16,7 +16,7 @@
 
 ## 文件结构
 
-- algorithm：存放优化算法和聚类算法类
+- method：存放优化算法和聚类算法类
   - sos：共生搜索算法
   - ap_cluster：AP聚类算法
 - utils：通用工具类
