@@ -1,7 +1,8 @@
 /**
  * ap算法（近邻传播聚类算法）的javascript实现
  * 方法来源于2007年的Science期刊论文：Clustering by Passing Messages Between Data Points
- * 可参考“https://blog.csdn.net/manjhok/article/details/78734025”
+ * 比较哈的参考网站：“https://blog.csdn.net/manjhok/article/details/78734025”
+ * “https://www.zhihu.com/question/25384514/answer/47636054”
  * @author 小熊
  * @date 2020-12-12
  */
