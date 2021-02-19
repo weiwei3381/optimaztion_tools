@@ -38,6 +38,9 @@ class SOS {
     this._getBest()  // 获取当前最好的值
   }
 
+  /**
+   * 共生算法运行
+   */
   run() {
     for (let iter = 0; iter < this.maxIter; iter++) {
       this._mutualismPhase()  // 互惠阶段
@@ -45,6 +48,13 @@ class SOS {
       this._parasitismPhase()  // 寄生阶段
       this._getBest()  // 更新当前最佳值
     }
+    return this.best
+  }
+
+  /**
+   * 获取结果
+   */
+  getResult(){
     return this.best
   }
 

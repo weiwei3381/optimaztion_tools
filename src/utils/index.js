@@ -4,7 +4,7 @@
  * @date 2020-12-12
  */
 
- const numeric = require('numeric')
+ const nc = require('numeric')
 
 /**
  * 获得在lb和ub范围内的随机向量
@@ -15,11 +15,11 @@
  */
 function getRandomVector(dimension, lb, ub) {
   // 先产生一组0-1随机值rand(0,1)，作为缩放程度的随机量
-  const scaleRandVec = numeric.random([dimension])
+  const scaleRandVec = nc.random([dimension])
   // 得到最大到最小范围的随机值, 即得到(ub-lb)
-  const rangeVec = numeric.sub(ub, lb)
+  const rangeVec = nc.sub(ub, lb)
   // 得到最终随机向量
-  const randomVec = numeric.add(lb, numeric.mul(scaleRandVec, rangeVec));
+  const randomVec = nc.add(lb, nc.mul(scaleRandVec, rangeVec));
   return randomVec
 }
 
