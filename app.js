@@ -1,11 +1,16 @@
 const nc = require('numeric')
 const SOS = require('./src/method/sos')
+const BBO = require('./src/method/bbo')
+const CLPSO = require('./src/method/clpso')
 const ApCluster = require("./src/method/ap_cluster")
 const benchmark = require('./src/benchmark')
 
 const fitnessFunc = ([x1, x2, x3]) => {
   return Math.pow(x1, 2) + Math.pow(x2, 2) + Math.pow(x3, 2)
 }
+// 测试能否正常导入
+console.log(BBO)
+console.log(CLPSO)
 
 // 测试sos算法，传入的参数分别是问题维度（30），搜索下界（[-600，-600,...,-600]，
 // 搜索上界[600,600,...,600]，优化函数。
