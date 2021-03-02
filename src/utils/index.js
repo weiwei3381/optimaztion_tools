@@ -96,10 +96,25 @@ function isContentEqualArray(array1, array2){
   return true
 }
 
+/**
+ * 求得矩阵中的第i列
+ * @param {Array} matrix 由数组构成的二维矩阵
+ * @param {number} i 第i列
+ */
+function getIthColumn(matrix, i){
+  const rows = matrix.length
+  const ithColumn = [] // 第i列
+  for(let k = 0; k < rows; k++){
+    ithColumn.push(matrix[k][i])
+  }
+  return ithColumn
+}
+
 module.exports = {
   getRandomVector,
   selectRandomNum,
   findMaxItem,
   findMinItem,
   isContentEqualArray,
+  getIthColumn
 }

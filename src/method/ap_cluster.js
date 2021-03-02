@@ -1,7 +1,7 @@
 /**
  * ap算法（近邻传播聚类算法）的javascript实现
  * 方法来源于2007年的Science期刊论文：Clustering by Passing Messages Between Data Points
- * 比较哈的参考网站：“https://blog.csdn.net/manjhok/article/details/78734025”
+ * 比较好的参考网站：“https://blog.csdn.net/manjhok/article/details/78734025”
  * “https://www.zhihu.com/question/25384514/answer/47636054”
  * @author 小熊
  * @date 2020-12-12
@@ -9,16 +9,17 @@
 
 const nc = require('numeric')
 const utils = require('../utils')
+const ClusterBase = require('./clusterBase')
 
-class ApCluster {
+class ApCluster extends ClusterBase {
   /**
    * 
    * @param {Array} data 需要聚类的数据列表，数据必须在Array中，N维数据用Array进行表示，
    * 如果是一维的则是[0.32]、二维数据则是[0.44, 0.31]、三维数据则是[1.3, 2.4, 5.1]，以此类推。
    * @param {number} lamda 阻尼系数, 范围应该在(0,1)中
    */
-  constructor(data, lamda = 0.5, maxIter = 100, maxStableIter = 20) {
-    this.data = data
+  constructor(data, lamda = 0.75, maxIter = 100, maxStableIter = 20) {
+    super(data)
     this.n = data.length  // 数据大小
     this.maxIter = maxIter // 最大迭代次数
     this.maxStableIter = maxStableIter  // 最大迭代稳定的次数
@@ -88,13 +89,14 @@ class ApCluster {
     this._setSimiMatrix()
     // 开始更新责任和可用度矩阵
     for (let i = 0; i < this.maxIter; i++) {
+      console.log(`正在运行${i}/${this.maxIter}`)
       // 更新责任矩阵
       this._updateRespMatrix()
       // 更新可用度矩阵
       this._updateAvailMatrix()
       // 检查是否稳定
       this._checkStable()
-      if(this.curStableIter >= this.maxStableIter) break
+      if (this.curStableIter >= this.maxStableIter) break
     }
     return this.getResult()
   }
@@ -110,7 +112,7 @@ class ApCluster {
       for (let k = 0; k < this.n; k++) {
         const aAddS = nc.add(this.availMatrix[i], this.simiMatrix[i])
         // 由于取最大值时要求k‘ != j，因此设第j个值为最小值保证它肯定不会取到
-        aAddS[k] = -Infinity
+        aAddS[k] = -Number.MAX_VALUE
         // 获得对应的新责任值
         const newRespValue = this.simiMatrix[i][k] - nc.sup(aAddS)
         // 更新责任值时需要用到阻尼因子λ，更新公式是：
@@ -120,32 +122,27 @@ class ApCluster {
     }
   }
 
+  //todo 先算总的累积和, 再减
   _updateAvailMatrix() {
+    // 获得责任矩阵的转置, 以便求r[:][i]
+    const respTrans = nc.transpose(this.respMatrix)
     for (let i = 0; i < this.n; i++) {
       for (let k = 0; k < this.n; k++) {
-        // 获得r(:,k)，因为不好取值，所以先转置然后取第k个
-        const r_k = nc.transpose(this.respMatrix)[k]
-        // 取值时不能包括i和k，所以将其置为0
-        // 可用矩阵更新需要分两种情况讨论，如果i!=k，则还需要限制i的值
-        if (i !== k) r_k[i] = 0
-        r_k[k] = 0
+        const r_k = respTrans[k] // 获得r(:,k)，因为不好取值，所以用转置然后取第k个
+        let newAvailValue = 0  // 新的可用度值
         // 正的责任值累积和
         let positiveRespSum = 0
-        for (let ele of r_k) {
-          if (ele > 0) {
-            positiveRespSum += ele
+        if (i !== k) {  // 如果i!=k的计算方法
+          for (let j = 0; j < this.n; j++) {
+            if (j === i || j === k) continue
+            positiveRespSum += Math.max(0, r_k[j])
           }
-        }
-        // 新的可用度值
-        let newAvailValue = 0
-        // 可用矩阵更新需要分两种情况讨论，即i!=k和i==k
-        if (i !== k) {
-          // i!=k时，新的可用度值a(i,k)=r(k,k)+正的责任值r(i',k))的累积和，其中i'不能等于i和k
-          newAvailValue = this.respMatrix[k][k] + positiveRespSum
-          // i!=k时，新的可用度值不能为正，最大必须为0
-          newAvailValue = newAvailValue < 0 ? newAvailValue : 0
-        } else {
-          // i==k时，a(i,k)=正的r(i',k))的累积和
+          newAvailValue = Math.min(0, this.respMatrix[k][k] + positiveRespSum)
+        } else {  // 如果i == k
+          for (let j = 0; j < this.n; j++) {
+            if (j === i) continue
+            positiveRespSum += Math.max(0, r_k[j])
+          }
           newAvailValue = positiveRespSum
         }
         // 根据阻尼系数更新可用性矩阵
@@ -170,9 +167,9 @@ class ApCluster {
       }
     }
     // 如果存在聚类中心，且这次聚类中心与上次聚类中心的内容一致，则认为是一次稳定，稳定次数+1
-    if(this.previousCenters && utils.isContentEqualArray(this.previousCenters, centers)){
+    if (this.previousCenters && utils.isContentEqualArray(this.previousCenters, centers)) {
       this.curStableIter += 1
-    }else{
+    } else {
       // 出现一次不稳定，则连续稳定次数归0
       this.curStableIter = 0
     }
@@ -191,20 +188,17 @@ class ApCluster {
     // 首先获取聚类中心
     // 计算责任矩阵和可用矩阵的和
     const sumMatrix = nc.add(this.respMatrix, this.availMatrix)
-    // 如果责任矩阵和可用矩阵的和大于0，则作为聚类中心
-    for (let i = 0; i < this.n; i++) {
-      if (sumMatrix[i][i] > 0) {
-        clusterResult.set(i, [])
-      }
-    }
     // 对于每个累加矩阵，找到第i行最大的值对应的列号，就是他所属的聚类中心index
     for (let i = 0; i < this.n; i++) {
       const { index } = utils.findMaxItem(sumMatrix[i])
-      clusterResult.get(index).push(i)
+      if(clusterResult.get(index)){
+        clusterResult.get(index).push(i)
+      }else{
+        clusterResult.set(index, [i])
+      }
     }
     return clusterResult
   }
-
 }
 
 module.exports = ApCluster
